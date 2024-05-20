@@ -29,7 +29,14 @@ public class Remision {
     private String placaCamion;
     private String conductor;
     private String ruta;
-
+    private int cantidadUnidades;
+    private double volumenTotal;
+    private double peso;
+    private String cuidadosEspeciales;
+    private boolean cerrada;
+    private int valoracionServicio;
+    private String comentarioValoracion;
+    
     // Constructor vacío (necesario para JPA)
     public Remision() {
     }
@@ -89,5 +96,69 @@ public class Remision {
 
     public void setRuta(String ruta) {
         this.ruta = ruta;
+    }
+
+    public Carga getCarga() {
+        return carga;
+    }
+
+    public void setCarga(Carga carga) {
+        this.carga = carga;
+    }
+
+    public int getCantidadUnidades() {
+        return cantidadUnidades;
+    }
+
+    public void setCantidadUnidades(int cantidadUnidades) {
+        this.cantidadUnidades = cantidadUnidades;
+    }
+
+    public double getVolumenTotal() {
+        return volumenTotal;
+    }
+
+    public void setVolumenTotal(double volumenTotal) {
+        this.volumenTotal = volumenTotal;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+    public String getCuidadosEspeciales() {
+        return cuidadosEspeciales;
+    }
+
+    public void setCuidadosEspeciales(String cuidadosEspeciales) {
+        this.cuidadosEspeciales = cuidadosEspeciales;
+    }
+
+    public boolean isCerrada() {
+        return cerrada;
+    }
+
+    public void setCerrada(boolean cerrada) {
+        this.cerrada = cerrada;
+    }
+
+    public int getValoracionServicio() {
+        return valoracionServicio;
+    }
+
+    public void setValoracionServicio(int valoracionServicio) {
+        this.valoracionServicio = valoracionServicio;
+    }
+
+    public String getComentarioValoracion() {
+        return comentarioValoracion;
+    }
+
+    public void setComentarioValoracion(String comentarioValoracion) {
+        this.comentarioValoracion = comentarioValoracion;
     }
 }

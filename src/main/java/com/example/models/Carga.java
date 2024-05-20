@@ -1,4 +1,4 @@
-package com.example.models;
+ package com.example.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Carga {
@@ -17,9 +20,6 @@ public class Carga {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @OneToMany(mappedBy = "carga", cascade = CascadeType.ALL)
-    private List<Remision> remisiones;
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -31,11 +31,39 @@ public class Carga {
     private double peso;
     private double valorAsegurado;
     private String empaque;
+    private String estado;
+    private String ruta;
+    private String mensajeConductor;
+    private boolean remitida;
+    private boolean entregada;
+    
+    @ManyToOne
+    private Vehiculo vehiculoAsignado;
+
+    @OneToMany(mappedBy = "carga", cascade = CascadeType.ALL)
+    private List<AplicacionCarga> aplicaciones;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carga")
+    private List<Remision> remisiones = new ArrayList<>();
 
     // Constructor vacío (necesario para JPA)
     public Carga() {
     }
+    public String getEstado() {
+        return estado;
+    }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Vehiculo getVehiculoAsignado() {
+        return vehiculoAsignado;
+    }
+
+    public void setVehiculoAsignado(Vehiculo vehiculoAsignado) {
+        this.vehiculoAsignado = vehiculoAsignado;
+    }
     // Getters y Setters
     public Long getId() {
         return id;
@@ -114,5 +142,45 @@ public class Carga {
     }
     public void setRemisiones(List<Remision> remisiones) {
         this.remisiones = remisiones;
+    }
+
+    public List<AplicacionCarga> getAplicaciones() {
+        return aplicaciones;
+    }
+
+    public void setAplicaciones(List<AplicacionCarga> aplicaciones) {
+        this.aplicaciones = aplicaciones;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
+
+    public String getMensajeConductor() {
+        return mensajeConductor;
+    }
+
+    public void setMensajeConductor(String mensajeConductor) {
+        this.mensajeConductor = mensajeConductor;
+    }
+
+    public boolean isRemitida() {
+        return remitida;
+    }
+
+    public void setRemitida(boolean remitida) {
+        this.remitida = remitida;
+    }
+
+    public boolean isEntregada() {
+        return entregada;
+    }
+
+    public void setEntregada(boolean entregada) {
+        this.entregada = entregada;
     }
 }

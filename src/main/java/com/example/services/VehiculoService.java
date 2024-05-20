@@ -27,7 +27,39 @@ public class VehiculoService {
             e.printStackTrace();
         }
     }
+    
+@POST
+@Path("/agregar")
+@Consumes(MediaType.APPLICATION_JSON)
+public Response agregarVehiculo(VehiculoDTO vehiculoDTO) {
+    Vehiculo vehiculo = new Vehiculo();
+    vehiculo.setPlaca(vehiculoDTO.getPlaca());
+    vehiculo.setMarca(vehiculoDTO.getMarca());
+    vehiculo.setModelo(vehiculoDTO.getModelo());
+    vehiculo.setCapacidadCarga(vehiculoDTO.getCapacidadCarga());
+    vehiculo.setTipoCarroceria(vehiculoDTO.getTipoCarroceria());
+    vehiculo.setDisponible(true); 
 
+    try {
+        entityManager.getTransaction().begin();
+        entityManager.persist(vehiculo);
+        entityManager.getTransaction().commit();
+        entityManager.refresh(vehiculo);
+    } catch (Throwable t) {
+        t.printStackTrace();
+        if (entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().rollback();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+    } finally {
+        entityManager.clear();
+        entityManager.close();
+    }
+
+    return Response.status(Response.Status.CREATED).build();
+}
+
+/*
     @POST
     @Path("/agregar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -57,7 +89,39 @@ public class VehiculoService {
 
         return Response.status(Response.Status.CREATED).build();
     }
+*/
+    
+    @POST
+    @Path("/reporte")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response enviarReporteDiario(@QueryParam("vehiculoId") Long vehiculoId, String ubicacionActual, String novedades) {
+        Vehiculo vehiculo = entityManager.find(Vehiculo.class, vehiculoId);
 
+        if (vehiculo == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Vehículo no encontrado").build();
+        }
+
+        vehiculo.setUbicacionActual(ubicacionActual);
+        vehiculo.setNovedades(novedades);
+
+        try {
+            entityManager.getTransaction().begin();
+            entityManager.merge(vehiculo);
+            entityManager.getTransaction().commit();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } finally {
+            entityManager.clear();
+            entityManager.close();
+        }
+
+        return Response.status(Response.Status.OK).entity("Reporte diario enviado con éxito").build();
+    }
+    
     @PUT
     @Path("/modificar/{id}")
     @Consumes(MediaType.APPLICATION_JSON)

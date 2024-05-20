@@ -9,6 +9,7 @@
     <class>com.example.models.Carga</class>
     <class>com.example.models.RutaEnvio</class>
     <class>com.example.models.Remision</class>
+    <class>com.example.models.AplicacionCarga</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/sample"/>
       <property name="javax.persistence.jdbc.user" value="app"/>
